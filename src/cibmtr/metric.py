@@ -55,6 +55,7 @@ def score(
     merged_df.reset_index(inplace=True)
     merged_df_race_dict = dict(merged_df.groupby(["race_group"]).groups)
     metric_list = []
+    race_scores = dict()
     for race in merged_df_race_dict.keys():
         # Retrieving values from y_test based on index
         indices = sorted(merged_df_race_dict[race])
@@ -66,4 +67,5 @@ def score(
             merged_df_race[event_label],
         )
         metric_list.append(c_index_race)
-    return float(np.mean(metric_list) - np.sqrt(np.var(metric_list)))
+        race_scores[race] = c_index_race
+    return float(np.mean(metric_list) - np.sqrt(np.var(metric_list))), race_scores
